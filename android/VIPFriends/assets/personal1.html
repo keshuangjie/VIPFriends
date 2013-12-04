@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>textinput demo</title>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css">
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+<style type="text/css">
+.ui-li-thumb, .ui-li-icon {
+    left: 8px;
+    max-height: 70px; 
+    max-width: 70px; 
+    align:center
+}
+</style>
+</head>
+<body>
+<div data-role="page" id="page1">
+<div data-role="header">
+<h1>个人信息</h1>
+</div>
+<div data-role="content">	
+	<ul data-role="listview" data-inset="true" data-theme="d">
+		<li>
+		<img src="images/album-bb.jpg" onclick="javascript:window.invoke.updateUserFace();"/>
+		<h3>随风所欲</h3>
+		<p>男</p>
+		<p class="ui-li-aside">
+		<a href="index.html" data-role="button" data-inline="true" data-theme="b" data-mini="true">invite</a>
+		</p>
+		</li>
+	</ul>
+	
+	<h4>基本信息</h4>
+	<ul data-role="listview" data-inset="true" data-theme="d">
+		<li><lable>年龄：<lable/><lable for="age">29<lable/></li>
+		<li><lable>籍贯：<lable/><lable for="birthPlace">湖北<lable/></li>
+		<li><lable>婚姻状况：<lable/><lable for="marriage">否<lable/></li>
+		<li><lable>邮箱：<lable/><lable for="email">test@gmail.com<lable/></li>
+		<li><lable>手机：<lable/><lable for="phone">18709087891<lable/></li>
+	</ul>
+
+	<h4>教育经历</h4>
+	<ul data-role="listview" data-inset="true" data-theme="d">
+		<li><lable>学历：<lable/><lable for="degree">本科<lable/></li>
+		<li><lable>专业：<lable/><lable for="major">电子商务<lable/></li>
+		<li><lable>毕业院校：<lable/><lable for="college">武汉理工大学<lable/></li>
+	</ul>
+	
+	<h4>公司背景</h4>
+	<ul data-role="listview" data-inset="true" data-theme="d">
+		<li><lable>行业：<lable/><lable for="profession">金融<lable/></li>
+		<li><lable>年薪：<lable/><lable for="salary">1000000￥<lable/></li>
+		<li><lable>公司：<lable/><lable for="company">北京尚科股份有限公司<lable/></li>
+		<li><lable>公司地址：<lable/><lable for="age">北京市海淀区西平庄<lable/></li>
+	</ul>
+	
+	<h4>兴趣爱好</h4>
+	<ul data-role="listview" data-inset="true" data-theme="d">
+		<li><lable for="interest">篮球、乒乓球、爬山、听音乐、看电影、跆拳道<lable/></li>
+	</ul>
+	
+	<h4>个性签名</h4>
+	<ul data-role="listview" data-inset="true" data-theme="d">
+		<li><lable for="sign">走自己的路，让别人说去吧<lable/></li>
+	</ul>
+</div>
+</body>
+</html>
