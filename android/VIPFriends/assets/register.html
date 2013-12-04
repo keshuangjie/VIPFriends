@@ -7,6 +7,49 @@
 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css">
 <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#btnRegister").click(function(){
+		if ($("#username").val() == '' || $("#passwd").val()== '')
+		{
+			alert("用户名和密码均不能为空！");
+			return ;
+		}
+		if ($("#passwd").val() != $("#passwd_confirm").val())
+		{
+			alert("两次密码输入不一致！");
+			return ;
+		}
+
+		$.post('http://192.168.201.75/register',{ 
+			//参数一
+			username: $('#username').val(), 
+			//参数二
+			passwd: $("#passwd").val() 
+		},
+		//回调函数 
+		function(theback) 
+		{
+			alert("hha");
+			console.debug(theback);
+			if (theback.msg == 'ok')
+			{
+				window.location.href="www.sina.com.cn";
+			}
+			else
+			{
+				alert(theback.msg);
+			}
+		},
+		//返回类型
+		"json"
+		);
+
+
+
+	});
+})
+</script>
 </head>
 <body>
 <div data-role="page" id="page1">
@@ -14,13 +57,13 @@
 <h1>CBD晚餐	注册页面</h1>
 </div>
 <div data-role="content">
-<label for="basic">用户名:</label>
-<input type="text" name="username" id="basic" value="" /></br>
+<label for="username">用户名:</label>
+<input type="text" name="username" id="username" value="" />
 <label for="passwd">密码:</label>
-<input type="password" name="passwd" id="passwd" value="" /></br>
+<input type="password" name="passwd" id="passwd" value="" />
 <label for="passwd_confirm">密码确认 :</label>
-<input type="password" name="passwd_confirm" id="passwd_confirm" value="" /></br>
-<input type="submit" value="注册" />
+<input type="password" name="passwd_confirm" id="passwd_confirm" value="" />
+<input type="button" value="注册" id="btnRegister"/>
 </div>
 </body>
 </html>
