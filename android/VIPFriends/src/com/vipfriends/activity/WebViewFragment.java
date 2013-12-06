@@ -60,8 +60,6 @@ public class WebViewFragment extends BaseFragment {
 		
 		if(mWebView == null){
 			
-			DLog.i(TAG, "mWebView == null");
-			
 			mWebView = new ProgressWebView(getActivity());
 
 			mWebView.setWebViewClient(new WebViewClient() {
@@ -77,7 +75,6 @@ public class WebViewFragment extends BaseFragment {
 			});
 			mWebView.addJavascriptInterface(new JSInvoke(), JS_INVOKE);
 			
-//			mWebView.loadUrl("file:///android_asset/register.html");
 			mWebView.loadUrl(mUrl);
 		}
 		
@@ -85,14 +82,7 @@ public class WebViewFragment extends BaseFragment {
 		if (parent != null) {            
 			parent.removeView(mWebView);      
 		} 
-//		mWebView.requestFocus();
-//		mWebView.setOnTouchListener(new View.OnTouchListener() {
-//			@Override
-//			public boolean onTouch(View v, MotionEvent event) {
-//				v.requestFocusFromTouch();
-//				return false;
-//			}
-//		});
+		
 		return mWebView;
 	}
 	
@@ -100,17 +90,21 @@ public class WebViewFragment extends BaseFragment {
 		DLog.i(TAG, "mWebView.canGoBack():" + mWebView.canGoBack());
 		if(mWebView.canGoBack()){
 			mWebView.goBack();
+			return true;
 		}
-		return mWebView.canGoBack();
+		return false;
 	}
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		DLog.i(TAG, "onActivityResult:" + requestCode);
+		DLog.i(TAG, "requestCode:" + requestCode);
+		
 		if (resultCode == Activity.RESULT_OK) {
 			switch (requestCode) {
 			// 如果是直接从相册获取
 			case LOCAL_PICTURE:
-				if (data != null && mUserPhotoUpload!=null) {
+				if (data != null && mUserPhotoUpload != null) {
 					mUserPhotoUpload.startPhotoZoom(data.getData());
 				}
 				break;
@@ -118,7 +112,7 @@ public class WebViewFragment extends BaseFragment {
 			case CAMERA_PICTURE:
 				try {
 					File userPhotoFile = mUserPhotoUpload.getUserPhotoFile();
-					if (userPhotoFile != null && userPhotoFile.isFile() && mUserPhotoUpload!=null) {
+					if (userPhotoFile != null && userPhotoFile.isFile() && mUserPhotoUpload != null) {
 						mUserPhotoUpload.startPhotoZoom(Uri.fromFile(userPhotoFile));
 					}
 				} catch (Exception e) {
@@ -127,7 +121,7 @@ public class WebViewFragment extends BaseFragment {
 				break;
 			// 取得裁剪后的图片
 			case CUT_PICTURE:
-				if (data != null && mUserPhotoUpload!=null) {
+				if (data != null && mUserPhotoUpload != null) {
 					mUserPhotoUpload.setPicToView(data);
 				}
 				break;
@@ -146,7 +140,6 @@ public class WebViewFragment extends BaseFragment {
 			mUserPhotoUpload = new UserPhotoUpload(getActivity());
 			mUserPhotoUpload.ShowPickDialog();
 		}
-		
 	}
 	
 }

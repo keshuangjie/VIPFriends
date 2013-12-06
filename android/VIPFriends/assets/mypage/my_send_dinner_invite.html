@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>textinput demo</title>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css">
+<link rel="stylesheet" href="./jquery-mobile-red-buttons.css">
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+
+</head>
+<body>
+<div data-role="page" id="page1">
+<div data-role="header" data-position="inline" data-backbtn="true">
+<a href="#home" data-icon="back" data-rel="back">返回</a>
+<h1>发送的邀请</h1>
+</div>
+	<div data-role="content">	
+	
+		<ul data-role="listview" data-inset="true" data-theme="c"> 
+			<li data-role="list-divider">您邀Broken Bells一起共进晚餐</li>
+			<li>
+				<a href="../commonpage/dinner_detail.html">
+				<img src="../images/album-bb.jpg">
+				<h2>Broken Bells</h2>
+				<p>娘惹厨房</p>
+				</a>
+			</li>
+			<li>
+				<h2>状态：<label name="status">等待中</h2>
+			</li>
+		</ul>
+
+		<ul data-role="listview" data-inset="true" data-theme="d" data-dividertheme="c"> 
+			<li data-role="list-divider">您邀JackSon一起共进晚餐</li>
+			<li>
+				<a href="../commonpage/dinner_detail.html" rel="external">
+				<img src="../images/album-bb.jpg">
+				<h2>Broken Bells</h2>
+				<p>娘惹厨房</p>
+				</a>
+			</li>
+			<li>
+				<h2>状态：<label name="status">已拒绝</h2>
+			</li>
+		</ul>
+		
+		<ul data-role="listview" data-inset="true" data-theme="d" data-dividertheme="c"> 
+			<li data-role="list-divider">您邀Richard一起共进晚餐</li>
+			<li>
+				<a href="../commonpage/dinner_detail.html" rel="external">
+				<img src="../images/album-bb.jpg">
+				<h2>Broken Bells</h2>
+				<p>娘惹厨房</p>
+				</a>
+			</li>
+			<li>
+				<h2>状态：<label name="status">已同意</h2>
+			</li>
+		</ul>
+		
+	</div>
+</body>
+</html>

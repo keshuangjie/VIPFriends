@@ -6,6 +6,14 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response.ErrorListener;
+import com.android.volley.Response.Listener;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
+import com.vipfriends.MyApplication;
+import com.vipfriends.network.MultipartRequest;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -26,29 +34,19 @@ public class UserPhotoUpload implements OnClickListener {
 	private static int PHOTO_ZOOM = 3;
 	private Activity myActivity;
 
-//	private ImageView mUserImageView = null;
-	private final String userPhotoDir = "/VIPFriends/userphoto";// 定义本应用在SD卡上所使用的文件夹
-
 	// 相机按钮弹出的对话框
 	private AlertDialog alertDialog = null;
-	
 
-//	public UserPhotoUpload(Activity myActivity, ImageView view) {
-//		this.myActivity = myActivity;
-////		this.mUserImageView = view;
-//		init();
-//	}
-	
 	public UserPhotoUpload(Activity myActivity) {
 		this.myActivity = myActivity;
 		init();
 	}
-	
+
 	/**
 	 * 初始化方法实现
 	 */
 	public void init() {
-//		mUserImageView.setOnClickListener(this);
+		// mUserImageView.setOnClickListener(this);
 	}
 
 	/**
@@ -63,24 +61,26 @@ public class UserPhotoUpload implements OnClickListener {
 	 * 选择提示对话框
 	 */
 	public void ShowPickDialog() {
-		final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(myActivity);
+		final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+				myActivity);
 		alertDialogBuilder.setTitle("修改头像");
 		final String[] items = { "拍照上传", "本地上传" };
 
-		alertDialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
+		alertDialogBuilder.setItems(items,
+				new DialogInterface.OnClickListener() {
 
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
 
-				alertDialog.dismiss();
-				String select = items[which];
-				if (select.equals("拍照上传")) {
-					getFromCamera();
-				} else if (select.equals("本地上传")) {
-					getFromLocal();
-				}
-			}
-		});
+						alertDialog.dismiss();
+						String select = items[which];
+						if (select.equals("拍照上传")) {
+							getFromCamera();
+						} else if (select.equals("本地上传")) {
+							getFromLocal();
+						}
+					}
+				});
 
 		alertDialog = alertDialogBuilder.show();
 
@@ -113,8 +113,13 @@ public class UserPhotoUpload implements OnClickListener {
 		Bundle extras = picdata.getExtras();
 		if (extras != null) {
 			Bitmap photo = extras.getParcelable("data");
-//			mUserImageView.setImageBitmap(photo);
-			uploadBitmap(photo);
+			File imageFile = getUserPhotoFile();
+			try {
+				saveMyBitmap(photo, imageFile);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			uploadBitmap(imageFile);
 		}
 	}
 
@@ -124,45 +129,57 @@ public class UserPhotoUpload implements OnClickListener {
 	public void getFromCamera() {
 		if (CommonUtil.checkSDcard()) {
 			Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-			intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(getUserPhotoFile()));
+			intent.putExtra(MediaStore.EXTRA_OUTPUT,
+					Uri.fromFile(getUserPhotoFile()));
 			myActivity.startActivityForResult(intent, RROM_CAMERA);
 		} else {
-			Toast.makeText(myActivity, "您的手机没有安装SD卡，请安装SD卡后重试！", Toast.LENGTH_LONG).show();
+			Toast.makeText(myActivity, "您的手机没有安装SD卡，请安装SD卡后重试！",
+					Toast.LENGTH_LONG).show();
 		}
 	}
-	
+
 	/**
 	 * 从本地获取照片
 	 */
 	public void getFromLocal() {
 		Intent intent = new Intent(Intent.ACTION_PICK, null);
 
-		intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+		intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+				"image/*");
 		myActivity.startActivityForResult(intent, RROM_LOCAL);
 	}
-	
-	//bitmap转成jpg
-	public void saveMyBitmap(Bitmap mBitmap) throws IOException {
-        File f = new File("/sdcard/jdmusic/userFace.jpg");
-        f.createNewFile();
-        FileOutputStream fOut = null;
-        try {
-                fOut = new FileOutputStream(f);
-        } catch (FileNotFoundException e) {
-                e.printStackTrace();
-        }
-        mBitmap.compress(Bitmap.CompressFormat.JPEG, 80, fOut);
-        try {
-                fOut.flush();
-        } catch (IOException e) {
-                e.printStackTrace();
-        }
-        try {
-                fOut.close();
-        } catch (IOException e) {
-                e.printStackTrace();
-        }
-}
+
+	/**
+	 * bitmap转成jpg
+	 * @param mBitmap
+	 * @throws IOException
+	 */
+	public void saveMyBitmap(Bitmap mBitmap, File file) throws IOException {
+		if (file == null) {
+			return;
+		}
+		if (file.exists()) {
+			file.delete();
+		}
+		file.createNewFile();
+		FileOutputStream fOut = null;
+		try {
+			fOut = new FileOutputStream(file);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		mBitmap.compress(Bitmap.CompressFormat.JPEG, 80, fOut);
+		try {
+			fOut.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			fOut.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * 上传照片
@@ -170,52 +187,37 @@ public class UserPhotoUpload implements OnClickListener {
 	 * @param bitmap
 	 *            要上传的bitmap
 	 */
-	private void uploadBitmap(final Bitmap photo) {
-		try {
-			int quality = 80;
-			
-			saveMyBitmap(photo);
+	private void uploadBitmap(File imageFile) {
 
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			photo.compress(Bitmap.CompressFormat.JPEG, quality, baos);
-
-			byte[] data = baos.toByteArray();
-//			String dataString = new String(data, "utf-8");
-//			DLog.i(TAG, "image=" + dataString);
-//			String code = Base64.encodeBytes(data);
-//			DLog.i(TAG, "image2=" + code);
-			
-//			HttpNetWorkRequest.uploadUserHeadImg(code, new RequestHandler() {
-//				
-//				@Override
-//				public void onComplete(RequestEntry requestEntry) {
-//					if(requestEntry.requestCode == RequestEntry.NETWORK_STATUS_OK){
-//						JSONObject json = (JSONObject) requestEntry.userData;
-//						if(json != null){
-//							int code = json.optInt("code");
-//							JSONObject childJson = null; 
-//							try {
-//								childJson = json.getJSONObject("data");
-//							} catch (JSONException e) {
-//								e.printStackTrace();
-//								DLog.i(TAG, "json data is error");
-//							}
-//							String imageUrl = childJson.optString("smallImgUrl");
-//							DLog.i(TAG, "imageUrl=" + imageUrl);
-//							if(code == 1 && !TextUtils.isEmpty(imageUrl)){
-//								mImageDownloader.download(imageUrl, mUserImageView);
-//								//用户头像信息改变，发布更新~
-//								MyApplication.getContext().sendBroadcast(new Intent(IAction.ACTION_BY_INFO_UPDATE));
-//							}
-//						}
-//					}else{
-//						ShowTools.toast("上传头像失败");
-//					}
-//				}
-//			});
-		} catch (Exception e) {
-			DLog.i(TAG, "uploadBitmap Exception = " + e.getMessage());
+		if(!imageFile.exists()){
+			try {
+				throw new FileNotFoundException("the upload file is not exists:" + imageFile.getAbsolutePath());
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+			return;
 		}
+
+		RequestQueue mQueue = Volley
+				.newRequestQueue(MyApplication.getContext());
+
+		mQueue.add(new MultipartRequest("http://192.168.201.75:8000/upload",
+				new ErrorListener() {
+
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						DLog.i(TAG,
+								"uploadBitmap error = " + error.getMessage());
+					}
+				}, new Listener<String>() {
+
+					@Override
+					public void onResponse(String arg0) {
+						DLog.i(TAG, "uploadBitmap onResponse = " + arg0);
+					}
+				}, imageFile, "userFace.jpg"));
+
+		mQueue.start();
 	}
 
 	/**
@@ -250,11 +252,16 @@ public class UserPhotoUpload implements OnClickListener {
 		File imageFile = null;
 		try {
 			if (CommonUtil.checkSDcard()) {
-				File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + userPhotoDir);
+				File file = new File(Environment.getExternalStorageDirectory()
+						.getAbsolutePath() + FileService.IMAGE_CHILD_DIR);
+				DLog.i(TAG, "getUserPhotoFile:" + file.getAbsolutePath());
 				if (!file.exists()) {
-					file.mkdir();
+					file.mkdirs();
 				}
-				imageFile = new File(file, "/image_userFace.jpg");
+				imageFile = new File(file, "image_userFace.jpg");
+				DLog.i(TAG,
+						"getUserPhotoFile:imageFile:"
+								+ imageFile.getAbsolutePath());
 			}
 			return imageFile;
 		} catch (Exception e) {
@@ -270,27 +277,27 @@ public class UserPhotoUpload implements OnClickListener {
 	 *            要操作的图片
 	 * @return
 	 */
-//	public Boolean savePhotoToCache(Bitmap bitmap) {
-//		String fileName = null;
-//		boolean result = false;
-//		Directory directory = FileService.getDirectory(FileService.IMAGE_DIR);
-//		if (null != directory) {
-//			try {
-//				String userPath = getUserName();
-//
-//				
-//				if (null != userPath) {
-//					fileName = userPath + FileService.CACHE_EXT_NAME_IMAGE;
-//					byte[] fileContent = Bitmap2Bytes(bitmap);
-//					result = FileService.saveToSDCard(directory, fileName, fileContent);
-//					return result;
-//				}
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		return result;
-//	}
+	// public Boolean savePhotoToCache(Bitmap bitmap) {
+	// String fileName = null;
+	// boolean result = false;
+	// Directory directory = FileService.getDirectory(FileService.IMAGE_DIR);
+	// if (null != directory) {
+	// try {
+	// String userPath = getUserName();
+	//
+	//
+	// if (null != userPath) {
+	// fileName = userPath + FileService.CACHE_EXT_NAME_IMAGE;
+	// byte[] fileContent = Bitmap2Bytes(bitmap);
+	// result = FileService.saveToSDCard(directory, fileName, fileContent);
+	// return result;
+	// }
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	// }
+	// return result;
+	// }
 
 	/**
 	 * bitmap to byte数组

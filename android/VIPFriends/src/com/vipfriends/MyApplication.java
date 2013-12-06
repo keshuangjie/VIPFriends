@@ -1,6 +1,7 @@
 package com.vipfriends;
 
 import com.vipfriends.util.DLog;
+import com.vipfriends.util.FileService;
 
 import android.app.Application;
 import android.content.Context;
@@ -38,6 +39,8 @@ public class MyApplication extends Application {
 		if (!BuildConfig.DEBUG)
 			Thread.setDefaultUncaughtExceptionHandler(new MyUncaughtExceptionHandler(
 					this));
+		
+		FileService.createRootDir();
 
 	}
 

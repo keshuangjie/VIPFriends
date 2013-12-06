@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>textinput demo</title>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css">
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+
+</head>
+<body>
+<div data-role="page" id="page1">
+<div data-role="header" data-position="inline" data-backbtn="true">
+<a href="#home" data-icon="back" data-rel="back">返回</a>
+<h1>申请共进晚餐</h1>
+</div>
+<div data-role="content">	
+
+		<ul data-role="listview" data-inset="true" data-theme="c"> 
+			<li data-role="list-divider">邀请与mlzboy共进晚餐</li>
+			<li>
+				<a href="">
+				<img src="">
+				<h2>Broken Bells</h2>
+				<p>Broken Bells</p>
+				</a>
+			</li>
+			<li>
+				<a href="">
+				选择餐厅
+				</a>
+			</li>
+			<li>
+				<a href="">
+				就餐时间
+				</a>
+			</li>
+			<li data-role="fieldcontain">
+				<label for="select-choice-1" class="select">目的</label>
+				<select name="select-choice-1" id="select-choice-1">
+					<option value="standard">交朋友</option>
+					<option value="rush">职业生涯交流</option>
+					<option value="rush">商务</option>
+				</select>
+			</li>
+<li data-role="fieldcontain">
+	        	<label for="textarea">备注:</label>
+			<textarea cols="40" rows="8" name="textarea" id="textarea"></textarea>
+			</li>
+			<li><h4>支付就餐保证金：25RMB</h4></li>
+
+		</ul>
+
+		
+			<ul data-role="listview" data-inset="true" data-theme="d" data-dividertheme="c"> 
+			<li data-role="list-divider" data-divider-theme="d">交易说明</li>
+			<li>请丰富个人资料以增大对方愿意与您一同就餐的机率</li>
+			<li>邀请与对方晚餐，对方将可以查看您所填写的所有信息</li>
+			<li>若对方同意您的申请,您将能看到对方所有资料及联系方式</li>
+			<li>支付的保证金用于承诺前往就餐，若一方未履约前往将该笔保证金支付给另一方</li>
+			<li>若双方均放弃或前往就餐,系统收取该笔保证金</li>
+			<li>若对方未同意与您一起晚餐，保证金将自动退回用户账户(T+1)</li>
+			<li>支付申请提交后,保证金的支配权转向系统手中,中途无法进行退款</li>
+			<li>邀请晚餐为专门针对某人，他人无法申请加入该晚餐</li>
+		</ul>
+		<a href="" data-role="button" id="profile_logout" data-theme="e">支付</a>	
+
+</div>
+<!--
+<div data-role="footer" data-position="fixed">
+   <div data-role="navbar">
+				<ul>
+						<li><a href="#home">首页</a></li>
+						<li><a href="" id="profile">个人信息</a></li>
+						<li><a href="#about">关于</a></li>
+				</ul>
+		</div>
+</div>
+-->
+</body>
+</html>

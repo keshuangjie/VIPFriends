@@ -19,18 +19,16 @@ import android.widget.TextView;
 public class TabGroupView extends LinearLayout implements OnClickListener {
 	private static final String TAG = "TabGroupView";
 	
-	private final Context mContext;
 	private boolean isInited = false;
 	private OnClickListener onClickListener;
 	private View currentView = null;
-	private Vector<BaseFragment> pageList;
+	private Vector<BaseFragment> mFragmentList;
 	private FragmentManager mFragmentManager;
 	private BaseFragment mCurrentFragment;
 	private int mContainerViewId;
 
 	public TabGroupView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		this.mContext = context;
 	}
 
 	public void setContainerViewId(int containerViewId) {
@@ -41,12 +39,12 @@ public class TabGroupView extends LinearLayout implements OnClickListener {
 		this.mFragmentManager = fragmentManager;
 	}
 
-	public void setPageList(Vector<BaseFragment> pageList) {
-		this.pageList = pageList;
+	public void setFragmentList(Vector<BaseFragment> fragmentList) {
+		this.mFragmentList = fragmentList;
 	}
 
-	public Vector<BaseFragment> getPageList() {
-		return this.pageList;
+	public Vector<BaseFragment> getFragmentList() {
+		return this.mFragmentList;
 	}
 
 	public void setTabText(String[] text) {
@@ -119,7 +117,7 @@ public class TabGroupView extends LinearLayout implements OnClickListener {
 	}
 
 	public void setSelected(int index, Object obj) {
-		if (pageList != null && pageList.size() > index && index >= 0) {
+		if (mFragmentList != null && mFragmentList.size() > index && index >= 0) {
 			if (!isInited) {
 				init();
 				isInited = true;
@@ -162,15 +160,15 @@ public class TabGroupView extends LinearLayout implements OnClickListener {
 		return 0;
 	}
 
-	public BaseFragment getCurrentPage() {
-		if (pageList != null && pageList.size() > 1)
-			return pageList.get(getSelectIndex());
+	public BaseFragment getCurrentFragment() {
+		if (mFragmentList != null && mFragmentList.size() > 1)
+			return mFragmentList.get(getSelectIndex());
 		return null;
 	}
 
-	public BaseFragment getPage(int index) {
-		if (pageList != null && pageList.size() > 1 && index < pageList.size())
-			return pageList.get(index);
+	public BaseFragment getFragment(int index) {
+		if (mFragmentList != null && mFragmentList.size() > 1 && index < mFragmentList.size())
+			return mFragmentList.get(index);
 		return null;
 	}
 
@@ -185,13 +183,13 @@ public class TabGroupView extends LinearLayout implements OnClickListener {
 				} else {
 					DLog.i("zhoubo",
 							"currentView.getId()==" + currentView.getId());
-					if (pageList == null)
+					if (mFragmentList == null)
 						return;
 					currentView.setSelected(false);
 				}
 			}
 			v.setSelected(true);
-			if (pageList == null)
+			if (mFragmentList == null)
 				return;
 			switchContent(currentView, v);
 		}
@@ -202,9 +200,9 @@ public class TabGroupView extends LinearLayout implements OnClickListener {
 	public void switchContent(View fromView, View toView) {
 		BaseFragment from = null;
 		if(fromView != null){
-			from = pageList.get(fromView.getId());
+			from = mFragmentList.get(fromView.getId());
 		}
-		BaseFragment to = pageList.get(toView.getId());
+		BaseFragment to = mFragmentList.get(toView.getId());
 		if (mCurrentFragment != to) {
 			mCurrentFragment = to;
 			FragmentTransaction transaction = mFragmentManager

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>textinput demo</title>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css">
+<link rel="stylesheet" href="./jquery-mobile-red-buttons.css">
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+
+</head>
+<body>
+<div data-role="page" id="page1">
+<div data-role="header" data-position="inline" data-backbtn="true">
+<a href="#home" data-icon="back" data-rel="back">返回</a>
+<h1>邀您一起晚餐</h1>
+</div>
+<div data-role="content">	
+
+		<ul data-role="listview" data-inset="true" data-theme="c"> 
+			<li data-role="list-divider">Broken Bells邀您一起共进晚餐</li>
+			<li>
+				<a href="">
+				<img src="">
+				<h2>Broken Bells</h2>
+				<p>Broken Bells</p>
+				</a>
+			</li>
+			<li>
+					<h4>餐厅名称：娘惹厨房</h4>
+					<h4>餐厅电话: 010-xxxxx</h4>
+					<h4>餐厅地点：国贸一期 </h4>
+					<h4>时间：2013年12月6日 晚上7点</h4>
+					<h4>状态：mlzboy已支付25元前往就餐保证金</h4>
+					<h4>备注：AA套餐</h4>
+			</li>
+			<li><h4>支付就餐保证金：25RMB</h4></li>
+		</ul>
+		<ul data-role="listview" data-inset="true" data-theme="d" data-dividertheme="c"> 
+			<li data-role="list-divider" data-divider-theme="d">交易说明</li>
+			<li>您可以查看邀请人所有资料以决定是否应邀</li>
+			<li>若同意应邀就餐,对方将能查看您的所有资料及联系方式</li>
+			<li>支付的保证金用于承诺前往就餐，若一方未履约前往将双倍返回保证金</li>
+			<li>若双方均放弃或前往就餐,系统收取该笔保证金</li>
+			<li>若对方未同意与您一起晚餐，保证金将自动退回用户账户</li>
+			<li>支付申请提交后,保证金的支配权转向系统手中,中途无法进行退款</li>
+		</ul>
+<fieldset class="ui-grid-a">
+	<div class="ui-block-a"><button type="submit" data-theme="r">不好意思</button></div>
+	<div class="ui-block-b"><button type="submit" data-theme="f">应邀支付</button></div>	   
+</fieldset>
+
+	
+</div>
+<div data-role="footer" data-position="fixed">
+   <div data-role="navbar">
+				<ul>
+						<li><a href="#home">首页</a></li>
+						<li><a href="" id="profile">个人信息</a></li>
+						<li><a href="#about">关于</a></li>
+						<!-- <li><a href="#persistentBar" class="ui-btn-active ui-state-persist">PersistentBar</a></li>-->
+				</ul>
+		</div>
+</div>
+</body>
+</html>
